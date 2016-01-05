@@ -1,5 +1,7 @@
 <?php
 
+namespace Framework\Http;
+
 class Request
 {
     //constant for verb
