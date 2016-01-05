@@ -44,7 +44,7 @@ class Request
         $this->path = $path;
         $this->setScheme($scheme);
         $this->setSchemeVersion($schemeVersion);
-        $this->headers = $headers;
+        $this->setHeaders($headers);
         $this->body = $body;
     }
 
@@ -109,6 +109,22 @@ class Request
         $this->schemeVersion = $schemeVersion;
     }
 
+    private function setHeaders(array $headers)
+    {
+        foreach ($headers as $header => $value) {
+            $header = strtolower($header);
+
+            if (isset($this->headers[$header])) {
+                throw new \RuntimeException(sprintf(
+                    "Header %s is already defined and cannot be set twice.",
+                    $header
+                ));
+            }
+
+            $this->headers[$header] = $value;
+        }
+    }
+
     /**
      * @return mixed
      */
@@ -144,6 +160,12 @@ class Request
     /**
      * @return array
      */
+    public function getHeader($name)
+    {
+        $name = strtolower($name);
+        return isset($this->headers[$name]) ? $this->headers[$name] : null;
+    }
+
     public function getHeaders()
     {
         return $this->headers;
