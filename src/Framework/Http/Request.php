@@ -10,11 +10,17 @@ class Request
     const PUT = 'PUT';
     const PATCH = 'PATCH';
     const OPTIONS = 'OPTIONS';
+    const CONNECT = 'CONNECT';
     const TRACE = 'TRACE';
+    const HEAD = 'HEAD';
     const DELETE = 'DELETE';
 
     const HTTP = 'HTTP';
     const HTTPS = 'HTTPS';
+
+    const VERSION_1_0 = '1.0';
+    const VERSION_1_1 = '1.1';
+    const VERSION_2_0 = '2.0';
 
     private $method;        //method - verb
     private $scheme;        //protocol
@@ -34,12 +40,73 @@ class Request
      */
     public function __construct($method, $path, $scheme, $schemeVersion, array $headers = [], $body = '')
     {
-        $this->method = $method;
+        $this->setMethod($method);
         $this->path = $path;
-        $this->scheme = $scheme;
-        $this->schemeVersion = $schemeVersion;
+        $this->setScheme($scheme);
+        $this->setSchemeVersion($schemeVersion);
         $this->headers = $headers;
         $this->body = $body;
+    }
+
+    /**
+     * @param string $method
+     */
+    public function setMethod($method)
+    {
+        $methods = [
+            self::GET,
+            self::POST,
+            self::PUT,
+            self::PATCH,
+            self::OPTIONS,
+            self::CONNECT,
+            self::TRACE,
+            self::HEAD,
+            self::DELETE,
+        ];
+
+        if(!in_array($method, $methods)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Method %s is not supported and must be one of %s.',
+                $method,
+                implode(', ', $methods)
+            ));
+        }
+        $this->method = $method;
+    }
+
+    /**
+     * @param $scheme
+     */
+    private function setScheme($scheme)
+    {
+
+        $schemes = [ self::HTTP, self::HTTPS ];
+
+        if(!in_array($scheme, $schemes)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Scheme %s is not supported and must be one of %s.',
+                $scheme,
+                implode(', ', $schemes)
+            ));
+        }
+        $this->scheme = $scheme;
+    }
+
+
+    private function setSchemeVersion($schemeVersion)
+    {
+
+        $schemeVersions = [ self::VERSION_1_0, self::VERSION_1_1, self::VERSION_2_0 ];
+
+        if(!in_array($schemeVersion, $schemeVersions)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Scheme %s is not supported and must be one of %s.',
+                $schemeVersion,
+                implode(', ', $schemeVersions)
+            ));
+        }
+        $this->schemeVersion = $schemeVersion;
     }
 
     /**
