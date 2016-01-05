@@ -1,0 +1,24 @@
+{
+    "name": "laflechette/cours-symfony",
+    "description": "Another PHP Framework",
+    "type": "library",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Mathieu Larcher",
+            "email": "larcher.mathieu@yahoo.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "": "tests/"
+        }
+    },
+    "minimum-stability": "alpha",
+    "require": {}
+}
